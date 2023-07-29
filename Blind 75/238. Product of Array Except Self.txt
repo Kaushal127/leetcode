@@ -1,0 +1,52 @@
+Given an integer array nums, return an array answer such that answer[i] is equal to the product of all the elements of nums except nums[i].
+
+The product of any prefix or suffix of nums is guaranteed to fit in a 32-bit integer.
+
+You must write an algorithm that runs in O(n) time and without using the division operation.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3,4]
+Output: [24,12,8,6]
+Example 2:
+
+Input: nums = [-1,1,0,-3,3]
+Output: [0,0,9,0,0]
+
+
+class Solution {
+    public int[] productExceptSelf(int[] nums) {
+        // find the total prod of each element in array and take care of 0 
+        int N = nums.length ;
+        int[] ans = new int[N] ;// to store output
+        int countOfZero = 0 ;
+        int prod = 1 ;
+           for (int i=0 ; i<N ; i++){
+               if (nums[i]==0){
+                   countOfZero++ ; 
+                   prod = prod*1 ; //we just skip that element
+               } else {
+                   prod = prod*nums[i] ;
+               }
+           }
+           // if number of zero is 2 or greater we just simply return empty array 
+           if (countOfZero>=2){
+               return ans ;
+           }
+           // fill the ans array accordingly
+           for (int i=0 ; i<N ; i++){
+               if (nums[i]==0) {
+                   ans[i] = prod ;
+                } else {
+                    if (countOfZero > 0) {
+                        ans[i] = 0  ;
+                    } else {
+                        ans[i] = prod / nums[i] ;
+                    }
+                }
+           }
+           return ans;
+    }
+}
