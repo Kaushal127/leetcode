@@ -1,0 +1,68 @@
+Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+
+An Anagram is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+ 
+
+Example 1:
+
+Input: s = "anagram", t = "nagaram"
+Output: true
+Example 2:
+
+Input: s = "rat", t = "car"
+Output: false
+ 
+
+Constraints:
+
+1 <= s.length, t.length <= 5 * 104
+s and t consist of lowercase English letters.
+ 
+
+Follow up: What if the inputs contain Unicode characters? How would you adapt your solution to such a case?
+
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length()!=t.length()) {
+            return false ;
+        }
+        HashMap <Character , Integer> mapS = new HashMap<>() ;
+        HashMap <Character , Integer> mapT = new HashMap<>() ;
+        fillMap(mapS,s) ;
+        fillMap(mapT,t) ;
+
+        return areMapsSame(mapS , mapT) ;
+    }
+    static void fillMap( HashMap <Character , Integer> map , String str) {
+        for (int i=0 ; i<str.length() ; i++){
+            char ch = str.charAt(i) ;
+            if (map.containsKey(ch)==false){
+                map.put(ch , 1) ;
+            } else {
+                int temp = map.get(ch) ;
+                temp++ ;
+                map.put(ch , temp) ;
+            }
+        }
+    }
+    static boolean areMapsSame(HashMap <Character , Integer> mapA ,HashMap <Character , Integer> mapB){
+        if (mapA.size()!=mapB.size()) {
+            return false ;
+        }
+        for(int i=0 ; i<26 ; i++){
+            char ch = (char) (i + 'a') ;
+            int f1=0 , f2=0 ;
+            if (mapA.containsKey(ch)==true){
+                f1 = mapA.get(ch) ;
+            }
+             if (mapB.containsKey(ch)==true){
+                f2 = mapB.get(ch) ;
+            }
+            if(f1!=f2){
+                return false ;
+            }
+        }
+        return true ;
+    }
+}
