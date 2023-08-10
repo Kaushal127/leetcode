@@ -1,0 +1,85 @@
+ven a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+
+ 
+
+Example 1:
+
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 1
+Output: 3
+Explanation: The LCA of nodes 5 and 1 is 3.
+Example 2:
+
+
+Input: root = [3,5,1,6,2,0,8,null,null,7,4], p = 5, q = 4
+Output: 5
+Explanation: The LCA of nodes 5 and 4 is 5, since a node can be a descendant of itself according to the LCA definition.
+Example 3:
+
+Input: root = [1,2], p = 1, q = 2
+Output: 1
+ 
+
+Constraints:
+
+The number of nodes in the tree is in the range [2, 105].
+-109 <= Node.val <= 109
+All Node.val are unique.
+p != q
+p and q will exist in the tree.
+
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if(root== null){
+            return null ;
+        }
+        if(root==p || root==q){
+            return root ;
+        }
+        ArrayList <TreeNode> l1 = nodeRootPath(root , p) ;
+        ArrayList <TreeNode> l2 = nodeRootPath(root , q) ;
+        if (l1.size()==0 || l2.size()==0){
+            return null ;
+        }
+        int i = l1.size()-1 ;
+        int j = l2.size()-1 ;
+          while (i>=0 && j>=0 && l1.get(i)==l2.get(j)){
+              i-- ;
+              j-- ;
+          }
+          return l1.get(i+1) ;
+    }
+    public ArrayList<TreeNode> nodeRootPath(TreeNode root ,TreeNode dest){
+        if (root== null) {
+            return new ArrayList<TreeNode>() ;
+        }
+        if (root.val==dest.val){
+            ArrayList<TreeNode> temp = new  ArrayList<TreeNode>() ;
+            temp.add(root) ;
+            return temp ;
+        }
+        ArrayList<TreeNode> la = nodeRootPath(root.left , dest) ;
+        if (la.size()>0){
+            la.add(root) ;
+            return la ;
+        }
+        ArrayList<TreeNode> ra = nodeRootPath(root.right , dest) ;
+        if (ra.size()>0){
+            ra.add(root) ;
+            return ra ;
+        }
+        return new ArrayList<TreeNode>() ;
+    }
+}
